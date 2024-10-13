@@ -1,7 +1,12 @@
 import math
+import pygame
 from engine import *
+'''
+AUTHOR: Imsara Samarasinghe
+EMAIL: imsara256@gmail.com
+'''
 
-######## CYLINDER ########
+######## CYLINDER #######
 
 # Function to generate vertices for a cylinder
 def generate_cylinder_vertices(center, radius, height, segments):
@@ -128,7 +133,7 @@ def draw_cube(cube_vertices, angle_x, angle_y, angle_z, viewer_distance):
     for face in faces:
         polygon_points = [final_vertices[i] for i in face]
         pygame.draw.polygon(screen, GREY, polygon_points)  # Draw filled face
-        pygame.draw.polygon(screen, BLACK, polygon_points, 1)  # Draw outline
+        #pygame.draw.polygon(screen, BLACK, polygon_points, 1)  # Draw outline
 
     # Draw the edges of the cube
     edges = [
@@ -137,9 +142,10 @@ def draw_cube(cube_vertices, angle_x, angle_y, angle_z, viewer_distance):
         (0, 4), (1, 5), (2, 6), (3, 7)   # Connecting edges
     ]
     
+    
     for edge in edges:
         pygame.draw.line(screen, BLACK, final_vertices[edge[0]], final_vertices[edge[1]], 2)
-
+    
 
 ##########################
 
