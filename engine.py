@@ -11,11 +11,13 @@ import math
 from shapes import Cylinder, Cube, Torus
 from config import screen, COLORS # IMPORT params
 from background import Axes, Floor # IMPORT Axes class
+from text import print_angles, print_zoom
 
 # initialise
 pygame.init()
 
 def main():
+    count = 0
     clock = pygame.time.Clock() #set pygame clock 
     angle_x, angle_y, angle_z = 0, 0, 0 # Initialise angles
     run = True # variable for sim window
@@ -28,13 +30,19 @@ def main():
     ground = Floor() # floor object
 
     # shapes class
-    cylinder = Cylinder(center=[0,0,-10], edge_color=(10,128,95))
-    cube = Cube(center=[0,10,0], face_color=COLORS['P_ORANGE'])
-    torus = Torus(center=[0,0,10], edge_color=COLORS['P_RED'])
+    cube1 = Cube(center=[0,10,0], face_color=COLORS['P_ORANGE'])
+    cube2 = Cube(center=[0,6,0], face_color=COLORS['P_GREEN'])
+    cube3 = Cube(center=[0,2,0], face_color=COLORS['P_RED'])
+    cube4 = Cube(center=[4,2,0], face_color=COLORS['P_YELLOW'])
+    cube5 = Cube(center=[-4,2,0], face_color=COLORS['P_PINK'])
+    cube6 = Cube(center=[0,14,0], face_color=COLORS['LAVENDAR'])
+    cube7 = Cube(center=[-4,14,0], face_color=COLORS['SALMON'])
+    cube8 = Cube(center=[4,14,0], face_color=COLORS['SEAGREEN'])
 
     while run:
-        screen.fill(COLORS['BACKGROUND_COLOR']) # screen background
-
+        screen.fill(COLORS['BACKGROUND_COLOR_2']) # screen background
+        print_zoom(viewer_distance)
+        print_angles(angle_x, angle_y, angle_z)
         # event loop for pygame events
         for event in pygame.event.get():
             if event.type == pygame.QUIT: # close simulation
@@ -79,10 +87,15 @@ def main():
         ground.draw_floor(angle_x, angle_y, angle_z, viewer_distance)
 
         # Draw using the defined vertices
-        torus.draw_torus(angle_x, angle_y, angle_z, viewer_distance)
-        cylinder.draw_cylinder(angle_x, angle_y, angle_z, viewer_distance)
-        cube.draw_cube(angle_x, angle_y, angle_z, viewer_distance)
-        
+        cube1.draw_cube(angle_x, angle_y, angle_z, viewer_distance)
+        cube2.draw_cube(angle_x, angle_y, angle_z, viewer_distance)
+        cube3.draw_cube(angle_x, angle_y, angle_z, viewer_distance)
+        cube4.draw_cube(angle_x, angle_y, angle_z, viewer_distance)
+        cube5.draw_cube(angle_x, angle_y, angle_z, viewer_distance)
+        cube6.draw_cube(angle_x, angle_y, angle_z, viewer_distance)
+        cube7.draw_cube(angle_x, angle_y, angle_z, viewer_distance)
+        cube8.draw_cube(angle_x, angle_y, angle_z, viewer_distance)
+
         # draw axes
         ax.draw_axes(angle_x, angle_y, angle_z, viewer_distance)
 
