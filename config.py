@@ -2,7 +2,7 @@
 import pygame
 
 # Screen dimensions
-width, height = 1400, 1000
+width, height = 1200, 800
 
 # create PyGame window
 screen = pygame.display.set_mode((width, height))
