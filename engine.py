@@ -24,9 +24,9 @@ def main():
     ground = Floor()
 
     # shapes class
-    cylinder = Cylinder(center=[0,0,-10])
-    cube = Cube(center=[0,10,0])
-    torus = Torus(center=[0,0,10])
+    cylinder = Cylinder(center=[0,0,-10], edge_color=(10,128,95))
+    cube = Cube(center=[0,10,0], face_color=COLORS['P_ORANGE'])
+    torus = Torus(center=[0,0,10], edge_color=COLORS['P_RED'])
 
     while run:
         screen.fill(COLORS['BACKGROUND_COLOR']) # screen background
