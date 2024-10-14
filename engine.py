@@ -1,3 +1,7 @@
+'''
+AUTHOR: Imsara Samarasinghe
+EMAIL: imsara256@gmail.com
+'''
 # module imports
 import pygame
 import sys
@@ -12,7 +16,7 @@ from background import Axes, Floor # IMPORT Axes class
 pygame.init()
 
 def main():
-    clock = pygame.time.Clock()
+    clock = pygame.time.Clock() #set pygame clock 
     angle_x, angle_y, angle_z = 0, 0, 0 # Initialise angles
     run = True # variable for sim window
     rotating = False # variable for finding roation status
@@ -20,8 +24,8 @@ def main():
     viewer_distance = 20 # initialise zoom
 
     # background objects
-    ax = Axes()
-    ground = Floor()
+    ax = Axes() # axes object
+    ground = Floor() # floor object
 
     # shapes class
     cylinder = Cylinder(center=[0,0,-10], edge_color=(10,128,95))
@@ -65,7 +69,7 @@ def main():
                 angle_y = math.radians(45)
                 angle_z = 0
 
-            # reset all angles to zero 
+            # reset all angles to zero - front view
             if event.type == pygame.KEYDOWN and event.key == pygame.K_r:
                 angle_x = 0
                 angle_y = 0
@@ -73,7 +77,6 @@ def main():
         
         # Draw ground
         ground.draw_floor(angle_x, angle_y, angle_z, viewer_distance)
-
 
         # Draw using the defined vertices
         torus.draw_torus(angle_x, angle_y, angle_z, viewer_distance)
@@ -86,7 +89,7 @@ def main():
         pygame.display.flip() # Update the screen
         clock.tick(60) # set refresh rate
 
-    pygame.quit()
+    pygame.quit() # close the window
     sys.exit
 
 if __name__ == '__main__':
