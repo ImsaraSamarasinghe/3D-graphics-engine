@@ -22,8 +22,10 @@ class Cylinder:
         _generate_cylinder_faces
         draw_cylinder
     '''
-    def __init__(self, center=[0,0,0], radius=2, height=5, segments=20):
+    def __init__(self, center=[0,0,0], radius=2, height=5, segments=20, edge_color = COLORS['BLACK'], face_color = COLORS['GREY']):
         self.vertices = self._generate_cylinder_vertices(center, radius, height, segments)
+        self.edge_color = edge_color
+        self.face_color = face_color
 
     def _generate_cylinder_vertices(self, center, radius, height, segments):
         cx, cy, cz = center
@@ -91,18 +93,21 @@ class Cylinder:
         # Draw the faces of the cylinder
         for face in faces:
             polygon_points = [final_vertices[i] for i in face]
-            pygame.draw.polygon(screen, COLORS['GREY'], polygon_points)  # Draw filled face
-            pygame.draw.polygon(screen, COLORS['BLACK'], polygon_points, 1)  # Draw outline
+            pygame.draw.polygon(screen, self.face_color, polygon_points)  # Draw filled face
+            
+            #pygame.draw.polygon(screen, COLORS['BLACK'], polygon_points, 1)  # Draw outline
 
         # Draw the edges of the cylinder
         for edge in edges:
-            pygame.draw.line(screen, COLORS['BLACK'], final_vertices[edge[0]], final_vertices[edge[1]], 2)
+            pygame.draw.line(screen, self.edge_color, final_vertices[edge[0]], final_vertices[edge[1]], 2)
 
 class Cube:
-    def __init__(self, center=[0,0,0], side_length=4):
+    def __init__(self, center=[0,0,0], side_length=4, edge_color=COLORS['BLACK'], face_color=COLORS['GREY']):
         self.vertices = self._generate_cube_vertices(center, side_length)
         self.edges = self._generate_cube_edges()
         self.faces = self._generate_cube_faces()
+        self.edge_color = edge_color
+        self.face_color = face_color
 
     def _generate_cube_vertices(self, center, side_length):
         # Half the side length to calculate the offsets from the center
@@ -154,18 +159,18 @@ class Cube:
 
         for face in self.faces:
             polygon_points = [final_vertices[i] for i in face]
-            pygame.draw.polygon(screen, COLORS['GREY'], polygon_points)  # Draw filled face
+            pygame.draw.polygon(screen, self.face_color, polygon_points)  # Draw filled face
         
         for edge in self.edges:
-            pygame.draw.line(screen, COLORS['BLACK'], final_vertices[edge[0]], final_vertices[edge[1]], 2)
+            pygame.draw.line(screen, self.edge_color, final_vertices[edge[0]], final_vertices[edge[1]], 2)
 
-################ TORUS #################
 
 class Torus:
 
-    def __init__(self, center=[0,0,0], R=5, r=2, segments_u=30, segments_v=15):
+    def __init__(self, center=[0,0,0], R=5, r=2, segments_u=30, segments_v=15, edge_color=COLORS['BLACK']):
         self.vertices = self._generate_torus_vertices(center, R, r, segments_u, segments_v)
         self.edges = self._generate_torus_edges(segments_u, segments_v)
+        self.edge_color = edge_color
 
     def _generate_torus_vertices(self, center, R, r, segments_u, segments_v):
         """
@@ -234,5 +239,5 @@ class Torus:
 
         # Draw the edges of the cylinder
         for edge in self.edges:
-            pygame.draw.line(screen, COLORS['GREY'], final_vertices[edge[0]], final_vertices[edge[1]], 2)
+            pygame.draw.line(screen, self.edge_color, final_vertices[edge[0]], final_vertices[edge[1]], 2)
 
