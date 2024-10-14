@@ -58,12 +58,14 @@ def main():
                 # Toggle fullscreen mode
                 pygame.display.toggle_fullscreen()
             
+            # Isometric screen format
             if event.type == pygame.KEYDOWN and event.key == pygame.K_i:
                 viewer_distance = 60
                 angle_x = math.radians(-35.26)
                 angle_y = math.radians(45)
                 angle_z = 0
 
+            # reset all angles to zero 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_r:
                 angle_x = 0
                 angle_y = 0
