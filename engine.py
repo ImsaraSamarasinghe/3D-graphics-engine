@@ -8,7 +8,7 @@ import sys
 import math
 
 # self defined
-from shapes import Cylinder, Cube, Torus
+from shapes import Cylinder, Cube, Torus, Sphere
 from config import screen, COLORS # IMPORT params
 from background import Axes, Floor # IMPORT Axes class
 from text import print_angles, print_zoom
@@ -17,7 +17,6 @@ from text import print_angles, print_zoom
 pygame.init()
 
 def main():
-    count = 0
     clock = pygame.time.Clock() #set pygame clock 
     angle_x, angle_y, angle_z = 0, 0, 0 # Initialise angles
     run = True # variable for sim window
@@ -38,6 +37,8 @@ def main():
     cube6 = Cube(center=[0,14,0], face_color=COLORS['LAVENDAR'])
     cube7 = Cube(center=[-4,14,0], face_color=COLORS['SALMON'])
     cube8 = Cube(center=[4,14,0], face_color=COLORS['SEAGREEN'])
+
+    ball = Sphere(center=[20,0,0])
 
     while run:
         screen.fill(COLORS['BACKGROUND_COLOR_2']) # screen background
@@ -95,6 +96,7 @@ def main():
         cube6.draw_cube(angle_x, angle_y, angle_z, viewer_distance)
         cube7.draw_cube(angle_x, angle_y, angle_z, viewer_distance)
         cube8.draw_cube(angle_x, angle_y, angle_z, viewer_distance)
+        ball.draw_sphere(angle_x, angle_y, angle_z, viewer_distance)
 
         # draw axes
         ax.draw_axes(angle_x, angle_y, angle_z, viewer_distance)
