@@ -245,7 +245,6 @@ class Cube:
         for edge in self.edges:
             pygame.draw.line(screen, self.edge_color, final_vertices[edge[0]], final_vertices[edge[1]], 2)
 
-
 class Torus:
 
     def __init__(self, center=[0,0,0], R=5, r=2, segments_u=30, segments_v=15, edge_color=COLORS['BLACK']):
@@ -342,17 +341,10 @@ class Torus:
 
 class Sphere:
     '''
-    Defines the attributes for a sphere
-
-    attributes:
-        __init__: Initialises the key dimensions of a sphere
-        _generate_sphere_vertices
-        _generate_sphere_edges
-        _generate_sphere_faces
-        draw_sphere
+    Defines the attributes for a sphere with shading based on light source
     '''
     
-    def __init__(self, center=[0,0,0], radius=5, segments_lat=20, segments_lon=20, edge_color=COLORS['BLACK'], face_color=COLORS['GREY']):
+    def __init__(self, center=[0,0,0], radius=5, segments_lat=30, segments_lon=30, face_color=COLORS['GREY'], light_pos=[10,10,1]):
         '''
         Initialise the class
 
@@ -360,14 +352,13 @@ class Sphere:
         :param radius: defines the radius of the sphere (default=5)
         :param segments_lat: number of segments for latitude (default=20)
         :param segments_lon: number of segments for longitude (default=20)
-        :param edge_color: defines the color of the edges (default=BLACK)
-        :param face_color: defines the colors on the faces (default=GREY)
+        :param face_color: base color of the faces (default=GREY)
+        :param light_pos: position of the light source in 3D space (default=[1, 1, 1])
         '''
         self.vertices = self._generate_sphere_vertices(center, radius, segments_lat, segments_lon)
-        self.edges = self._generate_sphere_edges(segments_lat, segments_lon)
         self.faces = self._generate_sphere_faces(segments_lat, segments_lon)
-        self.edge_color = edge_color
         self.face_color = face_color
+        self.light_pos = light_pos
     
     def _generate_sphere_vertices(self, center, radius, segments_lat, segments_lon):
         '''
@@ -396,28 +387,6 @@ class Sphere:
         
         return vertices
 
-    def _generate_sphere_edges(self, segments_lat, segments_lon):
-        '''
-        Creates the edges of the sphere
-
-        :param segments_lat: defines the segments for latitude
-        :param segments_lon: defines the segments for longitude
-        :return edges: outputs list of edges
-        '''
-        edges = []
-        
-        # Create edges along latitude (horizontal circles)
-        for i in range(segments_lat + 1):
-            for j in range(segments_lon):
-                current = i * segments_lon + j
-                next_lon = current + 1 if (j + 1) < segments_lon else i * segments_lon  # Wrap longitude
-                if i < segments_lat:
-                    next_lat = current + segments_lon
-                    edges.append((current, next_lat))  # Vertical edge between latitude circles
-                edges.append((current, next_lon))  # Horizontal edge
-        
-        return edges
-    
     def _generate_sphere_faces(self, segments_lat, segments_lon):
         '''
         Creates the faces of the sphere as quads
@@ -444,10 +413,53 @@ class Sphere:
                 faces.append([top_left, top_right, bottom_right, bottom_left])
         
         return faces
+    
+    def _calculate_face_normal(self, face):
+        '''
+        Calculates the normal vector of a face (quad) defined by 4 vertices
+
+        :param face: list of 4 vertex indices that define the face
+        :return normal: normal vector of the face
+        '''
+        v0 = self.vertices[face[0]]
+        v1 = self.vertices[face[1]]
+        v2 = self.vertices[face[2]]
+
+        # Calculate vectors for two edges of the quad
+        edge1 = [v1[i] - v0[i] for i in range(3)]
+        edge2 = [v2[i] - v0[i] for i in range(3)]
+        
+        # Cross product of edge1 and edge2 gives the face normal
+        normal = [edge1[1] * edge2[2] - edge1[2] * edge2[1],
+                  edge1[2] * edge2[0] - edge1[0] * edge2[2],
+                  edge1[0] * edge2[1] - edge1[1] * edge2[0]]
+        
+        # Normalize the normal
+        length = math.sqrt(normal[0]**2 + normal[1]**2 + normal[2]**2)
+        if length != 0:
+            normal = [n / length for n in normal]
+        
+        return normal
+
+    def _calculate_lighting(self, normal):
+        '''
+        Calculates the shading value based on the normal and the light source
+
+        :param normal: normal vector of the face
+        :return brightness: brightness factor for shading (between 0 and 1)
+        '''
+        # Light direction (can be normalized)
+        light_dir = self.light_pos
+        light_length = math.sqrt(light_dir[0]**2 + light_dir[1]**2 + light_dir[2]**2)
+        light_dir = [l / light_length for l in light_dir]
+
+        # Dot product between the normal and light direction
+        dot_product = max(0, normal[0] * light_dir[0] + normal[1] * light_dir[1] + normal[2] * light_dir[2])
+        return dot_product
 
     def draw_sphere(self, angle_x, angle_y, angle_z, viewer_distance):
         '''
-        Draws the sphere using the defined vertices, edges, and faces. Also applies transformations
+        Draws the sphere using the defined vertices, faces and applies lighting and shading
 
         :param angle_x: angle about x axis
         :param angle_y: angle about y axis
@@ -467,8 +479,16 @@ class Sphere:
         # Draw the faces of the sphere
         for face in self.faces:
             polygon_points = [final_vertices[i] for i in face]
-            pygame.draw.polygon(screen, self.face_color, polygon_points)  # Draw filled face
-        
-        # Draw the edges of the sphere
-        for edge in self.edges:
-            pygame.draw.line(screen, self.edge_color, final_vertices[edge[0]], final_vertices[edge[1]], 2)
+            
+            # Calculate the normal of the face
+            normal = self._calculate_face_normal(face)
+            normal_rotated = apply_rotation(normal, r_matrix)
+            
+            # Determine lighting for the face
+            brightness = self._calculate_lighting(normal_rotated)
+            
+            # Shade the face based on lighting (darker color with less brightness)
+            shaded_color = [min(255, max(0, int(c * brightness))) for c in self.face_color]  # Assuming GREY is a tuple like (r, g, b)
+            
+            # Draw the shaded face
+            pygame.draw.polygon(screen, shaded_color, polygon_points)
