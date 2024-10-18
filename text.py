@@ -1,3 +1,7 @@
+'''
+AUTHOR: Imsara Samarasinghe
+EMAIL: imsara256@gmail.com
+'''
 import pygame
 import math
 from config import COLORS, screen
