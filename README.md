@@ -12,7 +12,6 @@ PyGame does not have the ability to process 3D projects. It has the functionalit
 - Press `i` key for isometric view
 - Press `r` key for front view
 
-
 ## Requirements
 - **Python** - 3.x
 - **Install PyGame**
