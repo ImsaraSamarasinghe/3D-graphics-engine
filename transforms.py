@@ -1,3 +1,7 @@
+'''
+AUTHOR: Imsara Samarasinghe
+EMAIL: imsara256@gmail.com
+'''
 # module Imports
 import math
 
