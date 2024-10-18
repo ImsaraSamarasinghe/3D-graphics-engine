@@ -67,7 +67,7 @@ class Floor:
         self.vertices = self._generate_floor_vertices(center,side_length)
 
     def _generate_floor_vertices(self,center,side_length):
-        cx, cy, cz = center
+        cx, _, cz = center
         return [
                 [cx-side_length/2,0,cz-side_length/2],
                 [cx+side_length/2,0,cz-side_length/2],
@@ -93,9 +93,9 @@ class Floor:
             final_vertices.append(proj_vertex)
 
         faces = self._generate_floor_face()
-
+        face_color = COLORS['P_BLUE']
         for face in faces:
             polygon_points = [final_vertices[i] for i in face]
-            pygame.draw.polygon(floor_surface, (54, 179, 216, alpha), polygon_points)
+            pygame.draw.polygon(floor_surface, (face_color[0], face_color[1], face_color[2], alpha), polygon_points)
         
         screen.blit(floor_surface, (0, 0))
