@@ -355,7 +355,9 @@ class Sphere:
         :param face_color: base color of the faces (default=GREY)
         :param light_pos: position of the light source in 3D space (default=[1, 1, 1])
         '''
-        self.vertices = self._generate_sphere_vertices(center, radius, segments_lat, segments_lon)
+        self.center = center
+        self.radius = radius
+        self.vertices = self._generate_sphere_vertices(self.center, self.radius, segments_lat, segments_lon)
         self.faces = self._generate_sphere_faces(segments_lat, segments_lon)
         self.face_color = face_color
         self.light_pos = light_pos
@@ -492,3 +494,11 @@ class Sphere:
             
             # Draw the shaded face
             pygame.draw.polygon(screen, shaded_color, polygon_points)
+    
+    def update_center(self, new_center):
+        '''
+        Update the center of the sphere to match the physics simulation in 3D
+        '''
+        self.center[0] = new_center[0] # Update x-axis
+        self.center[1] = new_center[1] # Update y-axis
+        self.center[2] = new_center[2] # Update z-axis
