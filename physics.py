@@ -1,15 +1,20 @@
+
+from transforms import project_3d_to_2d
+
 class Physics3D:
-    def __init__(self, width=800, height=800, depth=800, gravity=0.5, ball_radius=10):
-        self.width = width
-        self.height = height
-        self.depth = depth  # Added depth for the 3D space
+    def __init__(self, center=[0,0,0], gravity=0.5, ball_radius=5): # width, depth and height determine impact with walls
+        #self.width = width
+        self.height = project_3d_to_2d(center,216,20)[1]
+        #self.depth = depth
         self.gravity = gravity
         self.ball_radius = ball_radius
         self.balls = []  # List of balls in the simulation
 
+
     def add_ball(self, position, velocity=(0, 0, 0)):
+        coord = project_3d_to_2d(position,216,20)
         ball = {
-            'pos': list(position),  # 3D position: [x, y, z]
+            'pos': [coord[0],coord[1],0],  # 3D position: [x, y, z]
             'velocity': list(velocity)  # 3D velocity: [vx, vy, vz]
         }
         self.balls.append(ball)
@@ -35,6 +40,7 @@ class Physics3D:
                 ball['pos'][1] = self.height - self.ball_radius
                 ball['velocity'][1] = -ball['velocity'][1] * 0.7  # Bounce with damping
 
+            '''
             # Handle left and right wall collisions (x-axis boundaries)
             if ball['pos'][0] - self.ball_radius < 0:
                 ball['pos'][0] = self.ball_radius
@@ -50,9 +56,17 @@ class Physics3D:
             elif ball['pos'][2] + self.ball_radius > self.depth:
                 ball['pos'][2] = self.depth - self.ball_radius
                 ball['velocity'][2] = -ball['velocity'][2] * 0.7
+            '''
 
     def get_ball_position(self, index=0):
         """
         Returns the current 3D position of the ball at a given index.
         """
         return self.balls[index]['pos'] if len(self.balls) > 0 else None
+
+class Test:
+    def __init__(self,center=[0,0,0]):
+        self.center = center
+
+    def printCenter(self,viewer_distance):
+        print(project_3d_to_2d(self.center,216,viewer_distance))
