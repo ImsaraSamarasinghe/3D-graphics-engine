@@ -350,7 +350,7 @@ class Sphere:
         _calculate_face_normal: Calculate the normals from faces
         _calculate_lighting: Calculate the shading from the normals and the direction of the light source
     '''
-    def __init__(self, center=[0,0,0], radius=5, segments_lat=30, segments_lon=30, gravity = 0.01, damping = 0.9, face_color=COLORS['GREY'], light_pos=[-50,50,50]):
+    def __init__(self, center=[0,0,0], radius=5, segments_lat=30, segments_lon=30, gravity = 0.01, damping = 0.9, floor = [0,0,0], face_color=COLORS['GREY'], light_pos=[-50,50,50]):
         '''
         Initialise the class
 
@@ -368,6 +368,7 @@ class Sphere:
 
         self.gravity = gravity # gravity in the environment
         self.damping = damping # damping factor
+        self.floor = floor # floor for the ball
 
         # define the lat and long
         self.segments_lat = segments_lat
@@ -523,7 +524,7 @@ class Sphere:
     
     def _floor_collisions(self):
         # Handle floor collision
-        if self.center[1] - self.radius < 0:
+        if self.center[1] - self.radius < self.floor[1]:
             self.center[1] = self.radius
             self.velocity[1] = -self.velocity[1] * self.damping  # Bounce with damping
 
