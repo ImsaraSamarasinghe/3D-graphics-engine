@@ -8,7 +8,7 @@ import pygame
 
 # import files
 from transforms import project_3d_to_2d, rotation_matrix, apply_rotation
-from config import COLORS, screen, height
+from config import COLORS, screen
 
 class Cylinder:
     '''
