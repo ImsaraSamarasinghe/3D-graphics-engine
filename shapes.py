@@ -8,7 +8,7 @@ import pygame
 
 # import files
 from transforms import project_3d_to_2d, rotation_matrix, apply_rotation
-from config import COLORS, screen
+from config import COLORS, screen, height
 
 class Cylinder:
     '''
@@ -342,9 +342,15 @@ class Torus:
 class Sphere:
     '''
     Defines the attributes for a sphere with shading based on light source
+
+    Attributes:
+        __init__: Class initialiser
+        _generate_sphere_vertices: Function to calculate the vertices for displaying the sphere
+        _generate_sphere_faces: Function to calculate the faces for displaying the sphere
+        _calculate_face_normal: Calculate the normals from faces
+        _calculate_lighting: Calculate the shading from the normals and the direction of the light source
     '''
-    
-    def __init__(self, center=[0,0,0], radius=5, segments_lat=30, segments_lon=30, face_color=COLORS['GREY'], light_pos=[10,10,1]):
+    def __init__(self, center=[0,0,0], radius=5, segments_lat=30, segments_lon=30, gravity = 0.01, damping = 0.9, face_color=COLORS['GREY'], light_pos=[-50,50,50]):
         '''
         Initialise the class
 
@@ -355,10 +361,20 @@ class Sphere:
         :param face_color: base color of the faces (default=GREY)
         :param light_pos: position of the light source in 3D space (default=[1, 1, 1])
         '''
+        # sphere definition
         self.center = center
         self.radius = radius
-        self.vertices = self._generate_sphere_vertices(self.center, self.radius, segments_lat, segments_lon)
-        self.faces = self._generate_sphere_faces(segments_lat, segments_lon)
+        self.velocity = [0,0,0] # velocities in the x, y & z directions
+
+        self.gravity = gravity # gravity in the environment
+        self.damping = damping # damping factor
+
+        # define the lat and long
+        self.segments_lat = segments_lat
+        self.segments_lon = segments_lon
+
+        self.vertices = None
+        self.faces = None
         self.face_color = face_color
         self.light_pos = light_pos
     
@@ -468,8 +484,13 @@ class Sphere:
         :param angle_z: angle about z axis
         :param viewer_distance: zoom setting
         '''
-        fov = 256
-        final_vertices = []
+        fov = 256 # field of view
+        final_vertices = [] # store the projected vertices
+        self.vertices = self._generate_sphere_vertices(self.center,
+                                                       self.radius,
+                                                       self.segments_lat,
+                                                       self.segments_lon) # generate vertices for sphere 
+        
         r_matrix = rotation_matrix(angle_x, angle_y, angle_z)  # Find the rotation matrix for the given angle
         
         # Apply rotation and projection to each vertex
@@ -477,6 +498,8 @@ class Sphere:
             aug_vertex = apply_rotation(vertex, r_matrix)
             proj_vertex = project_3d_to_2d(aug_vertex, fov, viewer_distance)
             final_vertices.append(proj_vertex)
+
+        self.faces = self._generate_sphere_faces(self.segments_lat,self.segments_lon) # generate faces
 
         # Draw the faces of the sphere
         for face in self.faces:
@@ -495,10 +518,18 @@ class Sphere:
             # Draw the shaded face
             pygame.draw.polygon(screen, shaded_color, polygon_points)
     
-    def update_center(self, new_center):
-        '''
-        Update the center of the sphere to match the physics simulation in 3D
-        '''
-        self.center[0] = new_center[0] # Update x-axis
-        self.center[1] = new_center[1] # Update y-axis
-        self.center[2] = new_center[2] # Update z-axis
+    def _apply_gravity(self):
+        self.velocity[1] += -self.gravity # Increase the velocity downwards
+    
+    def _floor_collisions(self):
+        # Handle floor collision
+        if self.center[1] - self.radius < 0:
+            self.center[1] = self.radius
+            self.velocity[1] = -self.velocity[1] * self.damping  # Bounce with damping
+
+    def update_ball_position(self, angle_x, angle_y, angle_z, viewer_distance):
+        self._apply_gravity() # add acceleration downwards
+        # Update ball position in 3D
+        self.center[1] += self.velocity[1]  # Update y (vertical movement)
+        self._floor_collisions() # check for floor collisions
+        self.draw_sphere(angle_x, angle_y, angle_z, viewer_distance) # draw the sphere at the new sphere
