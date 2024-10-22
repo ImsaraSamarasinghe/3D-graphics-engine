@@ -6,11 +6,11 @@ EMAIL: imsara256@gmail.com
 import pygame
 
 # Screen dimensions
-width, height = 1200, 800
+width, height = 800, 600
 
 # create PyGame window
 screen = pygame.display.set_mode((width, height))
-pygame.display.set_caption("3D Engine Visualisation")
+pygame.display.set_caption("3D Engine")
 
 # colors
 COLORS = {'WHITE':(255, 255, 255),
