@@ -8,7 +8,7 @@ import sys
 import math
 
 # self defined
-from shapes import Cylinder, Cube, Torus, Sphere
+from shapes import Sphere
 from config import screen, COLORS # IMPORT params
 from background import Axes, Floor # IMPORT Axes class
 from text import print_angles, print_zoom
@@ -59,6 +59,7 @@ def main():
                 angle_y += dx * 0.01
 
                 last_mouse_pos = current_mouse_pos
+                
             if event.type == pygame.MOUSEWHEEL: # change the zoom based on the scrollwheel
                 viewer_distance += event.y
 
@@ -99,4 +100,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
