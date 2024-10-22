@@ -12,7 +12,6 @@ from shapes import Cylinder, Cube, Torus, Sphere
 from config import screen, COLORS # IMPORT params
 from background import Axes, Floor # IMPORT Axes class
 from text import print_angles, print_zoom
-from physics import Physics3D
 
 # initialise
 pygame.init()
@@ -23,15 +22,19 @@ def main():
     run = True # variable for sim window
     rotating = False # variable for finding roation status
     last_mouse_pos = None # store last know mouse position
-    viewer_distance = 20 # initialise zoom
+    viewer_distance = 60 # initialise zoom
 
     # background objects
-    ax = Axes() # axes object
-    ground = Floor() # floor object
+    ax = Axes(side_length=5) # axes object
+    ground = Floor(side_length=50) # floor object
 
-
+    # shape class
+    ball1 = Sphere(center = [0,20,0], radius = 2, face_color=COLORS['P_GREEN'])
+    ball2 = Sphere(center = [12,50,0], radius = 4, gravity=0.2, damping=0.9, face_color=COLORS['LAVENDAR'])
+    ball3 = Sphere(center = [-12,100,0], radius = 3, gravity=0.4, damping=0.9, face_color=COLORS['SALMON'])
+    
     while run:
-        screen.fill(COLORS['BACKGROUND_COLOR_2']) # screen background
+        screen.fill(COLORS['GREY']) # screen background
         print_zoom(viewer_distance)
         print_angles(angle_x, angle_y, angle_z)
         # event loop for pygame events
@@ -80,6 +83,10 @@ def main():
         # Draw ground
         ground.draw_floor(angle_x, angle_y, angle_z, viewer_distance)
 
+        # Draw shape
+        ball1.update_ball_position(angle_x, angle_y, angle_z, viewer_distance)
+        ball2.update_ball_position(angle_x, angle_y, angle_z, viewer_distance)
+        ball3.update_ball_position(angle_x, angle_y, angle_z, viewer_distance)
 
         # draw axes
         ax.draw_axes(angle_x, angle_y, angle_z, viewer_distance)
