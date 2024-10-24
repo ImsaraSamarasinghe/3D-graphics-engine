@@ -17,7 +17,7 @@ from text import print_angles, print_zoom
 pygame.init()
 
 def main():
-    clock = pygame.time.Clock() #set pygame clock 
+    clock = pygame.time.Clock() # set pygame clock 
     angle_x, angle_y, angle_z = 0, 0, 0 # Initialise angles
     run = True # variable for sim window
     rotating = False # variable for finding roation status
@@ -29,9 +29,9 @@ def main():
     ground = Floor(side_length=50) # floor object
 
     # shape class
-    ball1 = Sphere(center = [0,20,0], radius = 2, face_color=COLORS['P_GREEN'])
-    ball2 = Sphere(center = [12,50,0], radius = 4, gravity=0.2, damping=0.9, face_color=COLORS['LAVENDAR'])
-    ball3 = Sphere(center = [-12,100,0], radius = 3, gravity=0.4, damping=0.9, face_color=COLORS['SALMON'])
+    ball1 = Sphere(center = [0,20,0], radius = 2, gravity=0.2, face_color=COLORS['P_GREEN'])
+    ball2 = Sphere(center = [12,50,0], radius = 4, gravity=0.2, damping=0.5, face_color=COLORS['LAVENDAR'])
+    ball3 = Sphere(center = [-12,100,0], radius = 3, gravity=0.2, damping=0.9, face_color=COLORS['SALMON'])
     
     while run:
         screen.fill(COLORS['GREY']) # screen background
@@ -59,7 +59,7 @@ def main():
                 angle_y += dx * 0.01
 
                 last_mouse_pos = current_mouse_pos
-                
+
             if event.type == pygame.MOUSEWHEEL: # change the zoom based on the scrollwheel
                 viewer_distance += event.y
 
