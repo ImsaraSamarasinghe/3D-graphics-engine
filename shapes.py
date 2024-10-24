@@ -16,10 +16,10 @@ class Cylinder:
 
     attributes:
         __init__: Initialises the key dimensions of a cylinder
-        _generate_cylinder_vertices: 
-        _generate_cylinder_edges
-        _generate_cylinder_faces
-        draw_cylinder
+        _generate_cylinder_vertices: Generate the vertices of the cylinder
+        _generate_cylinder_edges: Generates the edges using the vertices
+        _generate_cylinder_faces: Generates the faces using the vertices
+        draw_cylinder: draws the cylinder using the information about the defined cylinder
     '''
     def __init__(self, center=[0,0,0], radius=2, height=5, segments=20, edge_color = COLORS['BLACK'], face_color = COLORS['GREY']):
         '''
