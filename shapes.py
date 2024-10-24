@@ -19,7 +19,7 @@ class Cylinder:
         _generate_cylinder_vertices: Generate the vertices of the cylinder
         _generate_cylinder_edges: Generates the edges using the vertices
         _generate_cylinder_faces: Generates the faces using the vertices
-        draw_cylinder: draws the cylinder using the information about the defined cylinder
+        draw_shape: draws the cylinder using the information about the defined cylinder
     '''
     def __init__(self, center=[0,0,0], radius=2, height=5, segments=20, edge_color = COLORS['BLACK'], face_color = COLORS['GREY']):
         '''
@@ -106,7 +106,7 @@ class Cylinder:
             
         return faces
 
-    def draw_cylinder(self, angle_x, angle_y, angle_z, viewer_distance):
+    def draw_shape(self, angle_x, angle_y, angle_z, viewer_distance):
         '''
         Draws the cylinder using the defines vertices, edges and faces. Also applies transformations
 
@@ -148,7 +148,7 @@ class Cube:
         _generate_cube_vertices 
         _generate_cube_edges
         _generate_cube_faces
-        draw_cube
+        draw_shape
     '''
     def __init__(self, center=[0,0,0], side_length=4, edge_color=COLORS['BLACK'], face_color=COLORS['GREY']):
         '''
@@ -220,7 +220,7 @@ class Cube:
             (1, 2, 6, 5),  # Right face
         ]
 
-    def draw_cube(self, angle_x, angle_y, angle_z, viewer_distance):
+    def draw_shape(self, angle_x, angle_y, angle_z, viewer_distance):
         '''
         Draws the cube using the defines vertices, edges and faces. Also applies transformations
 
@@ -316,7 +316,7 @@ class Torus:
         
         return edges
 
-    def draw_torus(self, angle_x, angle_y, angle_z, viewer_distance):
+    def draw_shape(self, angle_x, angle_y, angle_z, viewer_distance):
         '''
         Draws the torus using the defines vertices and edges. Also applies transformations
 
@@ -476,7 +476,7 @@ class Sphere:
         dot_product = max(0, normal[0] * light_dir[0] + normal[1] * light_dir[1] + normal[2] * light_dir[2])
         return dot_product
 
-    def draw_sphere(self, angle_x, angle_y, angle_z, viewer_distance):
+    def draw_shape(self, angle_x, angle_y, angle_z, viewer_distance):
         '''
         Draws the sphere using the defined vertices, faces and applies lighting and shading
 
@@ -533,4 +533,4 @@ class Sphere:
         # Update ball position in 3D
         self.center[1] += self.velocity[1]  # Update y (vertical movement)
         self._floor_collisions() # check for floor collisions
-        self.draw_sphere(angle_x, angle_y, angle_z, viewer_distance) # draw the sphere at the new sphere
+        self.draw_shape(angle_x, angle_y, angle_z, viewer_distance) # draw the sphere at the new sphere
