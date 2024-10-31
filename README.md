@@ -1,18 +1,30 @@
 # 3D Graphics engine
 
 ## Overview
-PyGame does not have the ability to process 3D projects. It has the functionality to display 2D objects. This python code contains a set of mathematical transforms that process rotations of 3D axes and project 3D vertices onto a 2D plane (computer screen). The program also has some predefined 3D shapes that can be defined and displayed in the window.
+This project builds on the PyGame package's window creation and 2D shape display capabilities to create a 3D graphics engine. To do so, several transformations were written to allow for rotations around axes and to perform 3D to 2D coordinate calculations. The program is fully capable of displaying 3D objects such as cubes, cylinders and spheres. Later iterations added physics attributes to classes such as `Sphere` that allow for bouncing animations.
 
 ## Features
 - Rotates vertices around axes using `rotation_matrix()`
 - Projects 3D coordinates to 2D `project_3d_to_2d()`
 - Uses `pygame.draw()` functions to draw projected vertices
-- Zoom with scrollwheel
+- Shadow implementations in the `Sphere` class
+- Physics implementations in the `Sphere` class
+- Zoom with scroll wheel
 - Rotate using left-click
 - Press `i` key for isometric view
 - Press `r` key for front view
 
-![Video](SphereSim.mp4)
+### Cube Display
+![Cubes](Cubes.gif)
+
+### Torus Display
+![Torus](Torus.gif)
+
+### Sphere shaders
+![Sphere Shades](ShadowEffects.gif)
+
+### Physics Implementations
+![Physics](2024-10-31 12-57-32.gif)
 
 ## Requirements
 - **Python** - 3.x
