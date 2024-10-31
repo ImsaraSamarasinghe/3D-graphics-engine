@@ -24,7 +24,7 @@ This project builds on the PyGame package's window creation and 2D shape display
 ![Sphere Shades](ShadowEffects.gif)
 
 ### Physics Implementations
-![Physics]('2024-10-31 12-57-32.gif')
+![Physics](2024-10-31 12-57-32.gif)
 
 ## Requirements
 - **Python** - 3.x
